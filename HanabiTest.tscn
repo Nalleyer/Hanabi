@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gdnlibs/SimDrawer.gdns" type="Script" id=1]
+
+[node name="HanabiTest" type="Node2D"]
+
+[node name="HanabiManager" type="Node" parent="."]
+script = ExtResource( 1 )

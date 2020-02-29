@@ -1,0 +1,7 @@
+[gd_resource type="NativeScript" load_steps=2 format=2]
+
+[ext_resource path="res://gdnlibs/hanabi_library.gdnlib" type="GDNativeLibrary" id=1]
+
+[resource]
+class_name = "SinDrawer"
+library = ExtResource( 1 )
