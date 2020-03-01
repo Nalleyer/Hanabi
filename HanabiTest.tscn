@@ -6,3 +6,9 @@
 
 [node name="HanabiManager" type="Node" parent="."]
 script = ExtResource( 1 )
+
+[node name="FPS" type="Label" parent="."]
+margin_left = 1663.15
+margin_top = 21.1229
+margin_right = 1889.15
+margin_bottom = 88.1229

@@ -1,6 +1,8 @@
 use gdnative::*;
+use std::marker::PhantomData;
+use std::f32::consts::PI;
 
-const N: u32 = 1024;
+const N: u32 = 2048;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ManageErrs {
@@ -12,6 +14,7 @@ pub enum ManageErrs {
 #[inherit(Node2D)]
 pub struct SinDrawer {
     template: Option<PackedScene>,
+    start_time: i64,
 }
 
 unsafe impl Send for SinDrawer {}
@@ -48,7 +51,7 @@ where
 #[methods]
 impl SinDrawer {
     fn _init(_owner: Node2D) -> Self {
-        SinDrawer { template: None }
+        SinDrawer { template: None, start_time: OS::godot_singleton().get_system_time_msecs() }
     }
 
     #[export]
@@ -61,6 +64,34 @@ impl SinDrawer {
                 self.spawn_all(owner);
             }
             None => godot_print!("Could not load child scene. Check name."),
+        }
+    }
+
+    #[export]
+    unsafe fn _process(&mut self, owner: Node2D, delta: f64) {
+        let t = OS::godot_singleton().get_system_time_msecs() - self.start_time;
+        let tt = t as f64 / 100f64;
+        // godot_print!("{}", t as f64);
+        let count = owner.get_child_count();
+        for i in 1..count {
+            if let Some(child) = owner.get_child(i - 1) {
+                let mut item: Node2D = child.cast().unwrap();
+                let x_: f32 = tt as f32 + (i as f32 / N as f32) * 2f32 * PI;
+                let y = x_.sin() * 500f32 + 500f32;
+                // if i == 1 {
+                //     godot_print!("{}", y);
+                // }
+                item.set_position(geom::Vector2{x: (i * 2) as f32, y : y, _unit: PhantomData});
+            }
+        }
+        self.update_fps_label(owner);
+    }
+
+
+    unsafe fn update_fps_label(&self, owner: Node2D) {
+        if let Some(node) = owner.get_parent().and_then(|p| p.find_node(GodotString::from_str("FPS"), true, false)) {
+            let mut label: Label = node.cast().unwrap();
+            label.set_text(GodotString::from_str(format!("fps: {}", Engine::godot_singleton().get_frames_per_second())));
         }
     }
 

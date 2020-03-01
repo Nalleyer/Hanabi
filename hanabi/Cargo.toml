@@ -11,3 +11,6 @@ gdnative = "0.7"
 
 [lib]
 crate-type = ["cdylib"]
+
+#[lib]
+#crate-type = ["dylib"]
