@@ -1,8 +1,10 @@
 use gdnative::*;
 
 mod sin_test;
+mod hb_show;
 
 use sin_test::SinDrawer;
+use hb_show::HanabiShow;
 
 #[derive(gdnative::NativeClass)]
 #[inherit(gdnative::Node)]
@@ -16,7 +18,11 @@ impl HelloWorld {
 
     #[export]
     fn _ready(&self, _owner: gdnative::Node) {
-        godot_print!("hello, world.")
+        godot_print!("hello, world.");
+
+        HanabiShow::new().run_world();
+
+        println!("rust log");
     }
 }
 

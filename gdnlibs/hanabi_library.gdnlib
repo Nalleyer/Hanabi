@@ -1,18 +1,20 @@
-[entry]
-
-X11.64="./target/debug/libhanabi.so"
-OSX.64="./target/debug/libhanabi.dylib"
-Windows.64="res://target/debug/hanabi.dll"
-
-[dependencies]
-
-Windows.64=[  ]
-X11.64=[  ]
-OSX.64=[  ]
-
 [general]
 
 singleton=false
 load_once=true
 symbol_prefix="godot_"
 reloadable=true
+
+[entry]
+
+OSX.64="./target/debug/libhanabi.dylib"
+Windows.64="res://target/debug/hanabi.dll"
+Windows.32="res://target/debug/hanabi.dll"
+X11.64="./target/debug/libhanabi.so"
+
+[dependencies]
+
+OSX.64=[  ]
+Windows.64=[  ]
+Windows.32=[  ]
+X11.64=[  ]
