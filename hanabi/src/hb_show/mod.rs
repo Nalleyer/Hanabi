@@ -22,11 +22,11 @@ impl<'a> System<'a> for SysTest {
     }
 }
 
-pub struct HanabiShow;
+pub struct HbShow;
 
-impl HanabiShow {
+impl HbShow {
     pub fn new() -> Self {
-        HanabiShow {}
+        HbShow {}
     }
 
     pub fn run_world(&self) {

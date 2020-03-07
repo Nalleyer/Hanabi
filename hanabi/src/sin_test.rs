@@ -56,14 +56,14 @@ impl SinDrawer {
 
     #[export]
     unsafe fn _ready(&mut self, owner: Node2D) {
-        godot_print!("Hello World");
+        info!("sin ready");
         self.template = load_scene("res://Item.tscn");
         match &self.template {
             Some(_scene) => {
-                godot_print!("Loaded child scene successfully!");
+                info!("Loaded child scene successfully!");
                 self.spawn_all(owner);
             }
-            None => godot_print!("Could not load child scene. Check name."),
+            None => warn!("sin Could not load child scene. Check name."),
         }
     }
 
@@ -71,16 +71,12 @@ impl SinDrawer {
     unsafe fn _process(&mut self, owner: Node2D, delta: f64) {
         let t = OS::godot_singleton().get_system_time_msecs() - self.start_time;
         let tt = t as f64 / 100f64;
-        // godot_print!("{}", t as f64);
         let count = owner.get_child_count();
         for i in 1..count {
             if let Some(child) = owner.get_child(i - 1) {
                 let mut item: Node2D = child.cast().unwrap();
                 let x_: f32 = tt as f32 + (i as f32 / N as f32) * 2f32 * PI;
                 let y = x_.sin() * 500f32 + 500f32;
-                // if i == 1 {
-                //     godot_print!("{}", y);
-                // }
                 item.set_position(geom::Vector2{x: (i * 2) as f32, y : y, _unit: PhantomData});
             }
         }
@@ -99,7 +95,7 @@ impl SinDrawer {
         let template = if let Some(template) = &self.template {
             template
         } else {
-            godot_print!("Cannot spawn a child because we couldn't load the template scene");
+            warn!("Cannot spawn a child because we couldn't load the template scene");
             return;
         };
 
@@ -111,7 +107,7 @@ impl SinDrawer {
 
                     owner.add_child(Some(item.to_node()), false);
                 }
-                Err(err) => godot_print!("Could not instance Child : {:?}", err),
+                Err(err) => warn!("Could not instance Child : {:?}", err),
             }
         }
     }
