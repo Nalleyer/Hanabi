@@ -48,15 +48,8 @@ impl HelloWorld {
 
     #[export]
     fn /*_physics*/_process(&mut self, owner: Node, delta: f64) {
-        // let mut dispatcher = DispatcherBuilder::new()
-        //     .with(SysTest, "sys_test", &[])
-        //     .build();
         // info!("py");
-        if self.show.has_world() {
-            // info!("has world");
-            // dispatcher.setup(self.show.get_world_mut().unwrap());
-            // dispatcher.dispatch(self.show.get_world_mut().unwrap());
-        }
+        self.show.dispatch();
     }
 }
 

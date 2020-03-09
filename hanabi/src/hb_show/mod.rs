@@ -24,11 +24,12 @@ impl<'a> System<'a> for SysTest {
 
 pub struct HbShow {
     world: Option<specs::World>,
+    dispatcher: Option<specs::Dispatcher<'static, 'static>>,
 }
 
 impl HbShow {
     pub fn new() -> Self {
-        HbShow { world: None }
+        HbShow { world: None, dispatcher: None }
     }
 
     pub fn setup(&mut self) {
@@ -36,6 +37,18 @@ impl HbShow {
         world.register::<Vel>();
         world.create_entity().with(Vel(2.0)).build();
         self.world.replace(world);
+
+        let mut dispatcher = DispatcherBuilder::new()
+            .with(SysTest, "sys_test", &[])
+            .build();
+
+        self.dispatcher.replace(dispatcher);
+    }
+
+    pub fn dispatch(&mut self) {
+        if let Some(d) = &mut self.dispatcher {
+            d.dispatch(self.world.as_mut().unwrap());
+        }
     }
 
     pub fn has_world(&self) -> bool {
