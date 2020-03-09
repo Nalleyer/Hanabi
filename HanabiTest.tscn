@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://gdnlibs/SimDrawer.gdns" type="Script" id=1]
+[ext_resource path="res://gdnlibs/Test.gdns" type="Script" id=2]
 
 [node name="HanabiTest" type="Node2D"]
 
@@ -8,7 +9,10 @@
 script = ExtResource( 1 )
 
 [node name="FPS" type="Label" parent="."]
-margin_left = 1663.15
-margin_top = 21.1229
-margin_right = 1889.15
-margin_bottom = 88.1229
+margin_left = 1067.37
+margin_top = 51.4811
+margin_right = 1293.37
+margin_bottom = 118.481
+
+[node name="Test" type="Node" parent="."]
+script = ExtResource( 2 )

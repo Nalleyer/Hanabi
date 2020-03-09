@@ -69,6 +69,8 @@ impl SinDrawer {
 
     #[export]
     unsafe fn _process(&mut self, owner: Node2D, delta: f64) {
+        self.update_fps_label(owner);
+        // return;
         let t = OS::godot_singleton().get_system_time_msecs() - self.start_time;
         let tt = t as f64 / 100f64;
         let count = owner.get_child_count();
@@ -80,7 +82,6 @@ impl SinDrawer {
                 item.set_position(geom::Vector2{x: (i * 2) as f32, y : y, _unit: PhantomData});
             }
         }
-        self.update_fps_label(owner);
     }
 
 

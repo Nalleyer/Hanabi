@@ -2,14 +2,14 @@ use specs::prelude::*;
 
 // test component
 #[derive(Debug)]
-struct Vel(f32);
+pub struct Vel(f32);
 
 impl Component for Vel {
     type Storage = VecStorage<Self>;
 }
 
 // test system
-struct SysTest;
+pub struct SysTest;
 
 impl<'a> System<'a> for SysTest {
     type SystemData = (WriteStorage<'a, Vel>);
@@ -17,27 +17,32 @@ impl<'a> System<'a> for SysTest {
     fn run(&mut self, (mut vs): Self::SystemData) {
         for (v) in (&mut vs).join() {
             v.0 += 1f32;
-            println!("{}", v.0);
+            // info!("{}", v.0);
         }
     }
 }
 
-pub struct HbShow;
+pub struct HbShow {
+    world: Option<specs::World>,
+}
 
 impl HbShow {
     pub fn new() -> Self {
-        HbShow {}
+        HbShow { world: None }
     }
 
-    pub fn run_world(&self) {
-        // TODO: protect multiple call
+    pub fn setup(&mut self) {
         let mut world = World::new();
         world.register::<Vel>();
-        // test entiry
         world.create_entity().with(Vel(2.0)).build();
+        self.world.replace(world);
+    }
 
-        let mut dispatcher = DispatcherBuilder::new().with(SysTest, "sys_a", &[]).build();
-        dispatcher.setup(&mut world);
-        dispatcher.dispatch(&mut world);
+    pub fn has_world(&self) -> bool {
+        self.world.is_some()
+    }
+
+    pub fn get_world_mut(&mut self) -> Option<&mut World> {
+        self.world.as_mut()
     }
 }

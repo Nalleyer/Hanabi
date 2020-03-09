@@ -8,25 +8,55 @@ extern crate simple_logger;
 
 use gdnative::*;
 
+use std::thread;
+use std::rc::Rc;
+use std::cell::RefCell;
+
+use specs::prelude::*;
+
 mod sin_test;
 mod hb_show;
 
 use sin_test::SinDrawer;
-use hb_show::HbShow;
+use hb_show::{HbShow, SysTest};
+
+struct A {
+    em: RefCell<i32>
+}
 
 #[derive(gdnative::NativeClass)]
 #[inherit(gdnative::Node)]
-struct HelloWorld;
+struct HelloWorld {
+    show: HbShow,
+}
 
 #[gdnative::methods]
 impl HelloWorld {
     fn _init(_owner: gdnative::Node) -> Self {
-        HelloWorld
+        simple_logger::init_with_level(log::Level::Info).expect("init simple logger");
+        info!("simple_logger init");
+
+        HelloWorld { show: HbShow::new() }
     }
 
     #[export]
-    fn _ready(&self, _owner: gdnative::Node) {
-        HbShow::new().run_world();
+    fn _ready(&mut self, _owner: gdnative::Node) {
+        info!("hello world ready");
+        self.show.setup();
+    }
+
+
+    #[export]
+    fn /*_physics*/_process(&mut self, owner: Node, delta: f64) {
+        // let mut dispatcher = DispatcherBuilder::new()
+        //     .with(SysTest, "sys_test", &[])
+        //     .build();
+        // info!("py");
+        if self.show.has_world() {
+            // info!("has world");
+            // dispatcher.setup(self.show.get_world_mut().unwrap());
+            // dispatcher.dispatch(self.show.get_world_mut().unwrap());
+        }
     }
 }
 
@@ -35,9 +65,6 @@ impl HelloWorld {
 fn init(handle: gdnative::init::InitHandle) {
     handle.add_class::<SinDrawer>();
     handle.add_class::<HelloWorld>();
-
-    simple_logger::init_with_level(log::Level::Info).unwrap();
-    info!("simple_logger init");
 }
 
 godot_gdnative_init!();
