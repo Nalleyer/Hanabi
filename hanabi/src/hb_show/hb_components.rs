@@ -1,8 +1,6 @@
 use specs::prelude::*;
+use specs_derive::{Component};
 
-#[derive(Debug)]
+#[derive(Component, Debug)]
+#[storage(VecStorage)]
 pub struct Vel(pub f32);
-
-impl Component for Vel {
-    type Storage = VecStorage<Self>;
-}

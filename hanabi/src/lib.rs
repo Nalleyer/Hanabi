@@ -35,7 +35,7 @@ impl HelloWorld {
 
 
     #[export]
-    fn /*_physics*/_process(&mut self, _owner: Node, _delta: f64) {
+    fn _physics_process(&mut self, _owner: Node, _delta: f64) {
         // info!("py");
         self.show.dispatch();
     }
