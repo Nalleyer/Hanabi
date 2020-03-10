@@ -1,26 +1,10 @@
 use specs::prelude::*;
 
-// test component
-#[derive(Debug)]
-pub struct Vel(f32);
+pub mod hb_components;
+pub mod hb_systems;
 
-impl Component for Vel {
-    type Storage = VecStorage<Self>;
-}
-
-// test system
-pub struct SysTest;
-
-impl<'a> System<'a> for SysTest {
-    type SystemData = (WriteStorage<'a, Vel>);
-
-    fn run(&mut self, (mut vs): Self::SystemData) {
-        for (v) in (&mut vs).join() {
-            v.0 += 1f32;
-            // info!("{}", v.0);
-        }
-    }
-}
+use hb_components::*;
+use hb_systems::*;
 
 pub struct HbShow {
     world: Option<specs::World>,
@@ -38,7 +22,7 @@ impl HbShow {
         world.create_entity().with(Vel(2.0)).build();
         self.world.replace(world);
 
-        let mut dispatcher = DispatcherBuilder::new()
+        let dispatcher = DispatcherBuilder::new()
             .with(SysTest, "sys_test", &[])
             .build();
 

@@ -1,6 +1,4 @@
-#[macro_use]
 extern crate gdnative;
-#[macro_use]
 extern crate lazy_static;
 #[macro_use]
 extern crate log;
@@ -8,21 +6,11 @@ extern crate simple_logger;
 
 use gdnative::*;
 
-use std::thread;
-use std::rc::Rc;
-use std::cell::RefCell;
-
-use specs::prelude::*;
-
 mod sin_test;
 mod hb_show;
 
 use sin_test::SinDrawer;
-use hb_show::{HbShow, SysTest};
-
-struct A {
-    em: RefCell<i32>
-}
+use hb_show::{HbShow};
 
 #[derive(gdnative::NativeClass)]
 #[inherit(gdnative::Node)]
@@ -47,7 +35,7 @@ impl HelloWorld {
 
 
     #[export]
-    fn /*_physics*/_process(&mut self, owner: Node, delta: f64) {
+    fn /*_physics*/_process(&mut self, _owner: Node, _delta: f64) {
         // info!("py");
         self.show.dispatch();
     }

@@ -68,7 +68,7 @@ impl SinDrawer {
     }
 
     #[export]
-    unsafe fn _process(&mut self, owner: Node2D, delta: f64) {
+    unsafe fn _process(&mut self, owner: Node2D, _delta: f64) {
         self.update_fps_label(owner);
         // return;
         let t = OS::godot_singleton().get_system_time_msecs() - self.start_time;
